@@ -7,6 +7,7 @@
 3. [Data](#data)
 4. [Modelling](#Modelling)
 5. [Results](#results)
+6. [Deployment using Flask](#flask)
 
 ## <a name="overview"></a> Overview
 
@@ -68,3 +69,34 @@ The Random Forest classifier performed the best, with an `F1-Score of 73.86%` ap
 - This result must be taken with a grain of salt, as the target variable `Churn`, is imbalanced. Even if the F1-Score does account into the metric the False Positives and False Negatives.
 - Further SMOTE-like oversampling or undersampling to equalize the size of the two classes could be more unbiased, but they come with disadvantages too. They are discussed in the last section of the notebook above.
 
+## <a name = "flask"></a> Deployment using flask
+The web application is implemented with:
+
+- Flask running the back-end,
+- Bootstrap controls of front-end. The web application consists of the following parts:
+-    Python script process_data.py which builds the machine learning model. This script accepts the path to the dataset and the path where the resulting model should be saved as parameters.
+- The machine learning model, which is created by script create_model.py. The application loads the model and uses it to make predictions.
+- Python script run.py, which runs the logic of the application and renders web pages. The script loads the model on start and applies it to make predictions out of the data provided by the user on the web page.
+- Web page templates master.html and go.html of application web pages. Pages use bootstrap controls. The web application allows the user to enter the information about the customer and then tells whether the customer is about to churn based on this information.
+
+#### Running the web App
+There are two steps to get the application up and runnning with the web app.
+
+
+- Data Cleaning and ML Model Building
+Go to the project directory and then run the following command:
+
+`python data/process_data.py data/mini_sparkify_event_data.json model/classifier`
+
+- This will perform cleaning operations on the data and build a machine learning model that is saved to 'model' folder.
+
+
+- Starting the web app
+After performing the above processes, you can now run the web app to see the visualizations.
+
+Go the app directory and run the following command:
+
+
+`python run.py`
+- This will start the web app and will direct you to a URL where you can enter messages and get classification results for it. 
+- P.S: Running on Windows requires you to use http://localhost:8001
