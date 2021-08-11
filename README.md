@@ -68,6 +68,8 @@ The Random Forest classifier performed the best, with an `F1-Score of 73.86%` ap
 
 - This result must be taken with a grain of salt, as the target variable `Churn`, is imbalanced. Even if the F1-Score does account into the metric the False Positives and False Negatives.
 - Further SMOTE-like oversampling or undersampling to equalize the size of the two classes could be more unbiased, but they come with disadvantages too. They are discussed in the last section of the notebook above.
+- The app is also in the process of being deployed to IBM cloud using the devops pipeline.
+
 
 ## <a name = "flask"></a> Deployment using flask
 The web application is implemented with:
