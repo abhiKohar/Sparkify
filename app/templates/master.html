@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Sparkify -  Customer Churning Prediction</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="{{ url_for('static', filename='assets/images/favicon.ico') }}">
+
+        <!-- App css -->
+        <link href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ url_for('static', filename='assets/css/icons.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ url_for('static', filename='assets/css/style.css') }}" rel="stylesheet" type="text/css" />
+
+        <script src="{{ url_for('static', filename='assets/js/modernizr.min.js') }}"></script>
+        <script src="https://d14fo0winaifog.cloudfront.net/plotly-basic.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+
+        
+        <script src="{{ url_for('static', filename='assets/js/modernizr.min.js') }}"></script>
+        
+        <script src="{{ url_for('static', filename='assets/js/modernizr.min.js') }}"></script>
+        
+        <script src="{{ url_for('static', filename='assets/js/modernizr.min.js') }}"></script>
+
+
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/loading.css') }}">
+        <link href="{{ url_for('static', filename='assets/css/sweetalert.css') }}" rel="stylesheet" />
+        <script src="{{ url_for('static', filename='assets/js/sweetalert.min.js') }}"></script>
+
+
+    </head>
+
+    <body>
+
+        <!-- Navigation Bar-->
+        <header id="topnav">
+            <div class="topbar-main">
+                <div class="container-fluid">
+
+                    <!-- Logo container-->
+                    <div class="logo">
+                        <!-- Text Logo -->
+                        <a href="/" class="logo">
+                            <span class="logo-small"><i class="mdi mdi-radar"></i></span>
+                            <span class="logo-large"><i class="mdi mdi-radar"></i> Sparkify Customer Churn prediction</span>
+                        </a> 
+                    </div>
+                    <!-- End Logo container-->
+                    <div class="menu-extras topbar-custom">
+                        <ul class="list-unstyled topbar-right-menu float-right mb-0">
+                            <li class="menu-item">
+                                <!-- Mobile menu toggle-->
+                                <a class="navbar-toggle nav-link">
+                                    <div class="lines">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+                                </a>
+                                <!-- End mobile menu toggle-->
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- end menu-extras -->
+
+                    <div class="clearfix"></div>
+
+                </div> <!-- end container -->
+            </div>
+            <!-- end topbar-main -->
+
+            <div class="navbar-custom">
+                <div class="container-fluid">
+                    <div id="navigation">
+                        <!-- Navigation Menu-->
+                        <ul class="navigation-menu">
+                            <li class="has-submenu">
+                                <a href="/"><i class="icon-speedometer"></i>Home</a>
+                            </li>
+                        </ul>
+                        <!-- End navigation menu -->
+                    </div> <!-- end #navigation -->
+                </div> <!-- end container -->
+            </div> <!-- end navbar-custom -->
+        </header>
+        <!-- End Navigation Bar-->
+
+
+        <div class="wrapper">
+            <div class="container-fluid">
+                <div class="loading">
+                    please wait ... &#8230;
+                </div>
+                <!-- Page-Title -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-title-box">
+                            <div class="btn-group float-right">
+                                <ol class="breadcrumb hide-phone p-0 m-0">
+                                <!--<li class="breadcrumb-item"><a href="#">Highdmin</a></li>
+                                    <li class="breadcrumb-item active">Dashboard</li>-->
+                                </ol>
+                            </div>
+                            
+                           
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title end breadcrumb -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card-box">
+                            <h4 class="header-title mb-4">Prediction parameter Entry</h4>
+                                <!-- input form for customer info -->
+        <form name="form" class="needs-validation ml-5 col-10" action="/go" method="get"  role="form">
+            
+            <!-- header of the input form -->
+            <h4 class="mb-3">Enter information about the user:</h4>
+                   
+            <div class="row">
+                
+                <!-- input gender -->
+                <div class="mb-3 col-6">
+                    <p>Gender:</p>
+                    <div class="custom-control custom-radio">
+                        <input id="male" name="gender" type="radio" class="custom-control-input" value="male"  checked required>
+                        <label class="custom-control-label" for="male">Male</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input id="female" name="gender" type="radio" class="custom-control-input" value="female" required>
+                        <label class="custom-control-label" for="female">Female</label>
+                    </div>
+                </div>
+                
+                <!-- input average number of events per day -->
+                <div class="mb-3 col-6">
+                    <label for="avgEvents">Average actions per day:</label>
+                    <input id="avgEvents" type="number" class="form-control form-control-lg mb-4 form-group" name="avgEvents" value="" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Valid number for average number of user's actions per day is required.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                
+                <!-- input average number of songs per day -->
+                <div class="mb-3 col-6">
+                    <label for="avgSongs">Average number of songs listened per day:</label>
+                    <input id="avgSongs" type="number" class="form-control form-control-lg mb-4 form-group" name="avgSongs" value="" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Valid number for average number of songs the user listens to per day is required.
+                    </div>
+                </div>
+                
+                <!-- input number of thumbs up events -->
+                <div class="mb-3 col-6">
+                    <label for="thumbsup">Number of thumbs up:</label>
+                    <input id="thumbsup" type="number" class="form-control form-control-lg mb-4 form-group" name="thumbsup" value="" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Valid number for average number of thumps up is required.
+                    </div>
+                </div>
+            
+            </div>
+            
+            <div class="row">
+                
+                <!-- input number of thumbs down events -->
+                <div class="mb-3 col-6">
+                    <label for="thumbsdown">Number of thumbs down:</label>
+                    <input id="thumbsdown" type="number" class="form-control form-control-lg mb-4 form-group" name="thumbsdown" value="" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Valid number for average number of thumps down is required.
+                    </div>
+                </div>
+                
+                <!-- input number of add friends events -->
+                <div class="mb-3 col-6">
+                    <label for="add_friend">Number of add friends :</label>
+                    <input id="add_friend" type="number" class="form-control form-control-lg mb-4 form-group" name="add_friend" value="" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Valid number for average number of add friends is required.
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="row">
+                
+                <!-- registration date -->
+                <div class="mb-3 col-4">
+                    <label for="level">1st event Date :</label>
+                    <input name="reg_date" class="form-control" type="date" value="2018-08-19" id="reg_date" required>
+                </div>
+                
+                <!-- current user level -->
+                <div class="mb-3 col-4">
+                    <label for="level">User type :</label>
+                    <select class="custom-select d-block" name="level" id="level" required>
+                        <option value="">Choose...</option>
+                        <option>free</option>
+                        <option>paid</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please select a valid level.
+                    </div>
+                </div>
+                
+                 <!-- current user location -->
+                <div class="mb-3 col-4">
+                    <label for="location">Location:</label>
+                    <select class="custom-select d-block" name="location" id="country" required>
+                        <option value="">Choose...</option>
+                        <option>AL</option>
+                        <option>AK</option>
+                        <option>AZ</option>
+                        <option>AR</option>
+                        <option>CA</option>
+                        <option>CO</option>
+                        <option>CT</option>
+                        <option>DE</option>
+                        <option>DC</option>
+                        <option>FL</option>
+                        <option>GA</option>
+                        <option>HI</option>
+                        <option>ID</option>
+                        <option>IL</option>
+                        <option>IN</option>
+                        <option>IA</option>
+                        <option>KS</option>
+                        <option>KY</option>
+                        <option>LA</option>
+                        <option>ME</option>
+                        <option>MD</option>
+                        <option>MA</option>
+                        <option>MI</option>
+                        <option>MN</option>
+                        <option>MS</option>
+                        <option>MO</option>
+                        <option>MT</option>
+                        <option>NE</option>
+                        <option>NV</option>
+                        <option>NH</option>
+                        <option>NJ</option>
+                        <option>NM</option>
+                        <option>NY</option>
+                        <option>NC</option>
+                        <option>ND</option>
+                        <option>OH</option>
+                        <option>KY</option>
+                        <option>OR</option>
+                        <option>PA</option>
+                        <option>RI</option>
+                        <option>SC</option>
+                        <option>SD</option>
+                        <option>TN</option>
+                        <option>TX</option>
+                        <option>UT</option>
+                        <option>VT</option>
+                        <option>VA</option>
+                        <option>WA</option>
+                        <option>WV</option>
+                        <option>WI</option>
+                        <option>WY</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please select a valid location.
+                    </div>
+                </div>
+                
+            </div>
+                           
+                <!-- Submit button -->
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Predict</button>
+                
+        </form>
+                                {% block message %}
+                                {% endblock %}                               
+                            <!-- end row -->
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+                <div class="row"> 
+                    {% block content %}
+                    
+                    {% endblock %}
+                    {% for id in ids %}
+                        <div class="col-xl-6">
+                            <div class="card-box">                            
+                                <div id="{{id}}" class="flot-chart mt-5"></div>                                                                      
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <!-- end row -->
+
+            </div> <!-- end container -->
+        </div>
+        <!-- end wrapper -->
+
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        2020 © 
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- End Footer -->
+        <!-- jQuery  -->
+        <script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/js/waves.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/js/jquery.slimscroll.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/js/jquery.core.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/js/jquery.app.js') }}"></script>      
+
+
+        <!-- <script type="text/javascript">
+            const graphs = {{graphJSON | safe}};
+            const ids = {{ids | safe}};
+            for(let i in graphs) {
+                Plotly.plot(ids[i], graphs[i].data, graphs[i].layout);
+            }
+        </script> -->
+
+        <script type="text/javascript">
+            $(document).on('submit', 'form', function () {
+                displayBusyIndicator();
+            });
+            function displayBusyIndicator() {
+                $('.loading').show();
+            }
+        </script>
+    </body>
+</html>

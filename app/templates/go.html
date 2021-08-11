@@ -1,0 +1,50 @@
+{% extends "master.html" %}
+{% block title %}Results{% endblock %}
+
+{% block message %}
+    <hr />
+    <h4 class="text-center">MESSAGE</h4>
+    <p class="text-center"><i>{{query}}</i></p>
+{% endblock %}
+
+{% block content %}
+<div class="col-xl-12">
+    <div class="card-box">                            
+        <h4 class="header-title">Results = {% print result %}</h4>
+        <div class="text-center mt-4 mb-4">
+            <p class="text-center"><i>Prediction Result is shown below</i></p>
+            <div class="row">
+
+              {% if result == 0 %}
+                    <div class="alert alert-success ml-5 col-10" role="alert">
+                        <h4 class="alert-heading">Congrats!</h4>
+                        <p>The customer is not going to churn.</p>
+                        <hr>
+                        <p class="mb-0">The model prediction is that the customer is not going to churn.</p>
+                    </div>
+                    <script language='javascript'>swal('SUCCESS', 'The model prediction is that the customer is not going to churn.','success');</script>;
+                {% else %}
+                    {% if result == 1 %}
+                        <div class="alert alert-danger ml-5 col-10" role="alert">
+                            <h4 class="alert-heading">Warning!</h4>
+                            <p>The customer is about to churn.</p>
+                            <hr>
+                            <p class="mb-0">The model prediction is that the customer is likely to churn, kindly take all neccessary actions in order to retain customer.!</p>
+                        </div>
+                        <script language='javascript'>swal('DANGER', 'The model prediction is that the customer is likely to churn, so it is time to take action to retain this customer!','danger');</script>;
+                    {% else %}
+                        <div class="alert alert-warning ml-5 col-10" role="alert">
+                            <h4 class="alert-heading">Something went wrong.</h4>
+                            <p>The model wasn't able to predict customer churn.</p>
+                            <hr>
+                            <p class="mb-0">The model could not predict customer churn based on the entered parameters. I suggest you use a larger dataset for training.</p>
+                        </div>
+                        <script language='javascript'>swal('WARNNING', 'The model could not predict customer churn based on the entered parameters. I suggest you use a larger dataset for training.','warning');</script>;
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
